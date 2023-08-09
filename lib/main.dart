@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:parallax06/background/candy_background.dart';
 import 'package:parallax06/components/food_component.dart';
 import 'package:parallax06/components/player_component.dart';
 import 'package:parallax06/components/food.dart' as food;
+import 'package:parallax06/hud/hud_component.dart';
 import 'package:parallax06/overlay/game_over_overlay.dart';
 import 'package:parallax06/overlay/level_selection_overlay.dart';
 import 'package:parallax06/overlay/statistics_overlay.dart';
@@ -23,15 +26,26 @@ class MyGame extends FlameGame
   int eatenFood = 0;
   int lostFood = 0;
 
+  bool resetGame = false;
+
   int currentLevel = 1;
   typegame.TypeGame typeGame = typegame.TypeGame.byPoints;
   late PlayerComponent _playerComponent;
 
+  late HudComponent hudComponent;
+
   loadLevel(
       {bool dead = false,
       int currentLevel = 1,
-      typegame.TypeGame typeGame = typegame.TypeGame.byPoints}) {
+      typegame.TypeGame typeGame = typegame.TypeGame.byPoints}) async {
     paused = false;
+
+    resetGame = true;
+
+    Timer(const Duration(milliseconds: 300), () {
+      resetGame = false;
+    });
+
     foodTimer = 0;
     foodIndex = 0;
 
@@ -41,6 +55,11 @@ class MyGame extends FlameGame
 
     this.currentLevel = currentLevel;
     this.typeGame = typeGame;
+
+    final prefs = await SharedPreferences.getInstance();
+
+    prefs.setInt('currentLevel', currentLevel);
+    prefs.setInt('typeGame', typeGame.index);
 
     _playerComponent.reset();
 
@@ -133,8 +152,15 @@ class MyGame extends FlameGame
     // add(await bgParallax());
     await food.init();
     _playerComponent = PlayerComponent();
+    hudComponent = HudComponent();
     add(CandyBackground());
     add(_playerComponent);
+    add(hudComponent);
+
+    final prefs = await SharedPreferences.getInstance();
+
+    currentLevel = prefs.getInt('currentLevel') ?? 1;
+    typeGame = typegame.TypeGame.values[prefs.getInt('typeGame') ?? 1];
 
     return super.onLoad();
   }

@@ -7,6 +7,7 @@ import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/src/services/keyboard_key.g.dart';
 import 'package:flutter/src/services/raw_keyboard.dart';
+import 'package:gamepads/gamepads.dart';
 
 import 'package:parallax06/components/character.dart';
 import 'package:parallax06/components/food_component.dart';
@@ -19,6 +20,8 @@ class PlayerComponent extends Character with HasGameRef<MyGame> {
   double timeToChangeAnimation = 0;
   bool chewing = false;
 
+  final double _maxVelocity = 5.0;
+
   PlayerComponent() : super() {
     _init();
   }
@@ -28,6 +31,7 @@ class PlayerComponent extends Character with HasGameRef<MyGame> {
     debugMode = true;
     position = Vector2(spriteSheetWidth, spriteSheetHeight);
     size = Vector2(spriteSheetWidth, spriteSheetHeight);
+    // scale = Vector2.all(.5);
   }
 
   reset() {
@@ -51,7 +55,7 @@ class PlayerComponent extends Character with HasGameRef<MyGame> {
         animation = idleAnimation;
       }
     }
-
+    _movePlayerJoystick(dt);
     _movePlayer(dt);
   }
 
@@ -93,11 +97,7 @@ class PlayerComponent extends Character with HasGameRef<MyGame> {
           break;
       }
 
-      if (sideType == SideType.left || sideType == SideType.right) {
-        flipVertically();
-      }
-
-      angle += math.pi * 0.5;
+      _rotate();
     }
 
     return super.onKeyEvent(event, keysPressed);
@@ -105,6 +105,54 @@ class PlayerComponent extends Character with HasGameRef<MyGame> {
 
   @override
   FutureOr<void> onLoad() async {
+    // var gamepads = await Gamepads.list();
+    // print('*******');
+    // print(gamepads.toString());
+
+    Gamepads.events.listen((GamepadEvent event) {
+      // print("gamepadId" + event.gamepadId);
+      // print("timestamp" + event.timestamp.toString());
+      // print("type   " + event.type.toString());
+      // print("key   " + event.key.toString());
+      // print("value   " + event.value.toString());
+
+      if (event.key == 'button-0' && event.value == 1.0) {
+        // print('Rotate');
+        _rotate();
+      } else if (event.key == 'pov' && event.value == 0) {
+        // up
+        // print('up');
+        movementType = MovementType.up;
+      } else if (event.key == 'pov' && event.value == 4500) {
+        // up right
+        // print('up right');
+      } else if (event.key == 'pov' && event.value == 9000) {
+        // right
+        // print('right');
+        movementType = MovementType.right;
+      } else if (event.key == 'pov' && event.value == 13500) {
+        // buttom right
+        // print('buttom right');
+      } else if (event.key == 'pov' && event.value == 18000) {
+        //bottom
+        // print('bottom');
+        movementType = MovementType.down;
+      } else if (event.key == 'pov' && event.value == 22500) {
+        // buttom left
+        // print('buttom left');
+      } else if (event.key == 'pov' && event.value == 27000) {
+        // left
+        // print('left');
+        movementType = MovementType.left;
+      } else if (event.key == 'pov' && event.value == 31500) {
+        // top left
+        // print('top left');
+      } else {
+        movementType = MovementType.idle;
+        //
+      }
+    });
+
     final spriteImage = await Flame.images.load('shark.png');
 
     final spriteSheet = SpriteSheet(
@@ -121,6 +169,8 @@ class PlayerComponent extends Character with HasGameRef<MyGame> {
 
     body = RectangleHitbox();
     mouth = RectangleHitbox(size: Vector2(50, 35), position: Vector2(40, 65));
+
+    game.hudComponent.rotateButton.onPressed = _rotate;
 
     add(body);
     add(mouth);
@@ -148,6 +198,21 @@ class PlayerComponent extends Character with HasGameRef<MyGame> {
     }
 
     super.onCollisionStart(intersectionPoints, other);
+  }
+
+  void _movePlayerJoystick(double dt) {
+    if (gameRef.hudComponent.joystick.direction != JoystickDirection.idle) {
+      // print(gameRef.hudComponent.joystick.delta);
+      position.add(gameRef.hudComponent.joystick.delta * dt * _maxVelocity);
+    }
+  }
+
+  void _rotate() {
+    if (sideType == SideType.left || sideType == SideType.right) {
+      flipVertically();
+    }
+
+    angle += math.pi * 0.5;
   }
 
   void _movePlayer(double dt) {

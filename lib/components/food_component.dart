@@ -23,6 +23,7 @@ class FoodComponent extends SpriteComponent
   FoodComponent({required this.foodPreSprite}) : super() {
     debugMode = true;
     size = Vector2.all(50);
+    // scale = Vector2.all(.5);
   }
 
   @override
@@ -83,6 +84,10 @@ class FoodComponent extends SpriteComponent
 
   @override
   void update(double dt) {
+    if (gameRef.resetGame) {
+      removeFromParent();
+    }
+
     position.add(Vector2(
         foodPreSprite.speed * dt * factX, foodPreSprite.speed * dt * factY));
 
