@@ -73,5 +73,5 @@ StateGame notEatenThisFood(List<FoodPreSprite> levelN, int index,
 }
 
 String notEatenThisFoodMetadata(int currentLevel) {
-  return levelsOnlyTypeFood[currentLevel - 1].toString();
+  return levelsOnlyTypeFood[1].toString();
 }

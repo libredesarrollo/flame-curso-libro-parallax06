@@ -7,6 +7,10 @@ import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/src/services/keyboard_key.g.dart';
 import 'package:flutter/src/services/raw_keyboard.dart';
+
+import 'package:flame_audio/flame_audio.dart';
+import 'package:audioplayers/audioplayers.dart';
+
 import 'package:gamepads/gamepads.dart';
 
 import 'package:parallax06/components/character.dart';
@@ -20,9 +24,14 @@ class PlayerComponent extends Character with HasGameRef<MyGame> {
   double timeToChangeAnimation = 0;
   bool chewing = false;
 
+  late AudioPlayer audioPlayerChewing;
+
   final double _maxVelocity = 5.0;
 
   PlayerComponent() : super() {
+    FlameAudio.loop('chewing.wav', volume: 0).then((audioPlayer) {
+      audioPlayerChewing = audioPlayer;
+    });
     _init();
   }
 
@@ -53,10 +62,18 @@ class PlayerComponent extends Character with HasGameRef<MyGame> {
         changeAnimatimationTimer = 0;
         chewing = false;
         animation = idleAnimation;
+        // audioPlayerChewing.setVolume(0);
+        audioPlayerChewing.stop();
       }
     }
     _movePlayerJoystick(dt);
     _movePlayer(dt);
+  }
+
+  @override
+  void onRemove() {
+    audioPlayerChewing.dispose();
+    super.onRemove();
   }
 
   @override
@@ -195,6 +212,12 @@ class PlayerComponent extends Character with HasGameRef<MyGame> {
       game.points += other.foodPreSprite.food.point;
       game.eatenFood++;
       game.refreshStatistics(true);
+
+      audioPlayerChewing.setVolume(1);
+      audioPlayerChewing.seek(const Duration(seconds: 0));
+      audioPlayerChewing.resume();
+
+      FlameAudio.play('eating.mp3');
     }
 
     super.onCollisionStart(intersectionPoints, other);

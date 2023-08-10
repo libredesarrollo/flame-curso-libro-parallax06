@@ -38,6 +38,7 @@ dependencies:
   flame: 
   shared_preferences:
   gamepads:
+  flame_audio:
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +73,8 @@ flutter:
     - assets/images/shark.png
     - assets/images/candies.png
     - assets/images/food.png
+    - assets/audio/chewing.wav
+    - assets/audio/eating.mp3
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
