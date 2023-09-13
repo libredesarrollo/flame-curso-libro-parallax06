@@ -45,15 +45,14 @@ class FoodComponent extends SpriteComponent
     Random random = Random();
 
     // verificar lado de incidencia
+
     if (foodPreSprite.sideType == SideType.up) {
       factY = 1;
     } else if (foodPreSprite.sideType == SideType.down) {
       factY = -1;
-    }
-    if (foodPreSprite.sideType == SideType.left) {
+    } else if (foodPreSprite.sideType == SideType.left) {
       factX = 1;
-    }
-    if (foodPreSprite.sideType == SideType.right) {
+    } else if (foodPreSprite.sideType == SideType.right) {
       factX = -1;
     }
 
