@@ -4,6 +4,7 @@ import 'dart:ui';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame/experimental.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:parallax06/components/food.dart';
@@ -11,7 +12,7 @@ import 'package:parallax06/main.dart';
 import 'package:parallax06/utils/helper.dart';
 
 class FoodComponent extends SpriteComponent
-    with CollisionCallbacks, HasGameRef<MyGame> {
+    with CollisionCallbacks, HasGameReference<MyGame> {
   FoodPreSprite foodPreSprite;
 
   int factX = 0, factY = 0;
@@ -84,7 +85,7 @@ class FoodComponent extends SpriteComponent
 
   @override
   void update(double dt) {
-    if (gameRef.resetGame) {
+    if (game.resetGame) {
       removeFromParent();
     }
 

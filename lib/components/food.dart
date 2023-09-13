@@ -52,11 +52,6 @@ init() async {
   foods = [
     Food(
         typeFood: TypeFood.cake,
-        chewed: 2,
-        point: 49,
-        sprite: spriteSheet.getSprite(0, 0)),
-    Food(
-        typeFood: TypeFood.cake,
         chewed: 1,
         point: 1,
         sprite: spriteSheet.getSprite(0, 0)),

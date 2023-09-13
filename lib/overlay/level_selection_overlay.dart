@@ -23,8 +23,7 @@ class _LevelSelectionOverlayState extends State<LevelSelectionOverlay> {
       height: screenHeight,
       child: Center(
           child: Container(
-        width: screenWidth - 150,
-        height: screenHeight - 150,
+        padding: const EdgeInsets.all(150),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(15),

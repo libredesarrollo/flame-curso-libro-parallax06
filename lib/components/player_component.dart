@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flame/collisions.dart';
+import 'package:flame/experimental.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
@@ -19,7 +20,7 @@ import 'package:parallax06/main.dart';
 import 'package:parallax06/utils/create_animation_by_limit.dart';
 import 'package:parallax06/utils/helper.dart';
 
-class PlayerComponent extends Character with HasGameRef<MyGame> {
+class PlayerComponent extends Character with HasGameReference<MyGame> {
   double changeAnimatimationTimer = 0;
   double timeToChangeAnimation = 0;
   bool chewing = false;
@@ -224,9 +225,9 @@ class PlayerComponent extends Character with HasGameRef<MyGame> {
   }
 
   void _movePlayerJoystick(double dt) {
-    if (gameRef.hudComponent.joystick.direction != JoystickDirection.idle) {
+    if (game.hudComponent.joystick.direction != JoystickDirection.idle) {
       // print(gameRef.hudComponent.joystick.delta);
-      position.add(gameRef.hudComponent.joystick.delta * dt * _maxVelocity);
+      position.add(game.hudComponent.joystick.delta * dt * _maxVelocity);
     }
   }
 

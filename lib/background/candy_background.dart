@@ -6,7 +6,7 @@ import 'package:flame/components.dart';
 class CandyBackground extends ParallaxComponent {
   @override
   FutureOr<void> onLoad() async {
-    parallax = await gameRef.loadParallax([
+    parallax = await game.loadParallax([
       ParallaxImageData('layer06_sky.png'),
       ParallaxImageData('layer05_rocks.png'),
       ParallaxImageData('layer04_clouds.png'),
