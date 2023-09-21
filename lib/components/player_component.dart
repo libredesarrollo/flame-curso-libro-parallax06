@@ -171,7 +171,7 @@ class PlayerComponent extends Character with HasGameReference<MyGame> {
       }
     });
 
-    final spriteImage = await Flame.images.load('shark.png');
+    final spriteImage = await Flame.images.load('player.png');
 
     final spriteSheet = SpriteSheet(
         image: spriteImage,
@@ -186,7 +186,7 @@ class PlayerComponent extends Character with HasGameReference<MyGame> {
     animation = idleAnimation;
 
     body = RectangleHitbox();
-    mouth = RectangleHitbox(size: Vector2(50, 35), position: Vector2(40, 65));
+    mouth = RectangleHitbox(size: Vector2(100, 80), position: Vector2(110, 70));
 
     game.hudComponent.rotateButton.onPressed = _rotate;
 

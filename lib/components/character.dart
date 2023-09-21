@@ -8,8 +8,8 @@ class Character extends SpriteAnimationComponent
     with KeyboardHandler, CollisionCallbacks {
   double speed = 500;
 
-  final double spriteSheetWidth = 269;
-  final double spriteSheetHeight = 118;
+  final double spriteSheetWidth = 231;
+  final double spriteSheetHeight = 230;
 
   late SpriteAnimation idleAnimation, chewAnimation;
 
