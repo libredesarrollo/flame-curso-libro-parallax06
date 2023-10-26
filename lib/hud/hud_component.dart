@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flame/components.dart';
 import 'package:flame/palette.dart';
 import 'package:flutter/widgets.dart';

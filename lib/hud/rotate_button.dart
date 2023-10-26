@@ -1,7 +1,4 @@
 import 'package:flame/input.dart';
-import 'package:flame/src/events/messages/tap_cancel_event.dart';
-import 'package:flame/src/events/messages/tap_down_event.dart';
-import 'package:flame/src/events/messages/tap_up_event.dart';
 import 'package:flutter/material.dart';
 
 class RotateButton extends HudButtonComponent {
